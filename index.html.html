@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Interativo: Cuidando dos Seus Medicamentos</title>
+<style>
+    :root {
+        --primary: #0f766e;
+        --primary-dark: #134e4a;
+        --primary-light: #ccfbf1;
+        --accent-orange: #f97316;
+        --accent-amber: #d97706;
+        --accent-red: #dc2626;
+        --accent-green: #16a34a;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-color: #1e293b;
+        --text-muted: #64748b;
+        --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: var(--font-main);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        font-size: 18px; /* Accessible font size for 40+ */
+        padding-bottom: 50px;
+    }
+
+    /* Accessibility Bar & Download Button */
+    .access-bar {
+        background-color: var(--primary-dark);
+        color: white;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+    .access-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .font-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .font-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .download-btn {
+        background: var(--accent-orange);
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.2s;
+    }
+
+    .download-btn:hover {
+        background: #ea580c;
+    }
+
+    /* Hero Banner */
+    .hero {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        color: white;
+        padding: 35px 20px;
+        text-align: center;
+        border-bottom: 5px solid var(--accent-orange);
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        font-weight: 800;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: var(--primary-light);
+        max-width: 700px;
+        margin: 0 auto 20px auto;
+    }
+
+    /* Search Bar */
+    .search-box {
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 1.1rem;
+        border: 2px solid transparent;
+        border-radius: 30px;
+        outline: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-box input:focus {
+        border-color: var(--accent-orange);
+    }
+
+    /* Main Container */
+    .container {
+        max-width: 900px;
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+        scrollbar-width: thin;
+    }
+
+    .tab-btn {
+        background: #e2e8f0;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-color);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 8px rgba(15, 118, 110, 0.3);
+    }
+
+    /* Content Cards */
+    .content-section {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .content-section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid #e2e8f0;
+    }
+
+    .card h2 {
+        color: var(--primary);
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid var(--primary-light);
+        padding-bottom: 8px;
+    }
+
+    .icon-badge {
+        background: var(--primary-light);
+        color: var(--primary);
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    /* Interactive Accordion */
+    .accordion-item {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        background: #f1f5f9;
+        padding: 15px 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+    }
+
+    .accordion-header:hover {
+        background: #e2e8f0;
+    }
+
+    .accordion-body {
+        padding: 18px 20px;
+        display: none;
+        background: white;
+        border-top: 1px solid #cbd5e1;
+    }
+
+    .accordion-body.open {
+        display: block;
+    }
+
+    /* Visual Tarja Tags */
+    .tag-tarja {
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        color: white;
+        display: inline-block;
+        font-size: 0.95rem;
+    }
+
+    .tarja-sem { background-color: #64748b; }
+    .tarja-vermelha { background-color: var(--accent-red); }
+    .tarja-preta { background-color: #0f172a; }
+    .tarja-amarela { background-color: #f59e0b; color: #000; }
+
+    /* Interactive Calculator / Tracker Tool */
+    .tool-box {
+        background: #f0fdf4;
+        border: 2px solid #bbf7d0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .tool-box h3 {
+        color: var(--accent-green);
+        margin-bottom: 12px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .input-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .input-group input, .input-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    .btn-calc {
+        background: var(--accent-green);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1.05rem;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn-calc:hover {
+        background: #15803d;
+    }
+
+    .calc-result {
+        margin-top: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 6px;
+        border-left: 4px solid var(--accent-green);
+        display: none;
+    }
+
+    /* Quiz Container */
+    .quiz-card {
+        background: #fff7ed;
+        border: 2px solid #ffedd5;
+    }
+
+    .quiz-card h2 {
+        color: var(--accent-orange);
+        border-bottom-color: #ffedd5;
+    }
+
+    .quiz-option {
+        background: white;
+        border: 1px solid #fed7aa;
+        padding: 12px 18px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+    .quiz-option:hover {
+        background: #ffedd5;
+    }
+
+    .quiz-option.correct {
+        background: #dcfce7;
+        border-color: #86efac;
+        color: #166534;
+        font-weight: bold;
+    }
+
+    .quiz-option.incorrect {
+        background: #fee2e2;
+        border-color: #fca5a5;
+        color: #991b1b;
+    }
+
+    .feedback-box {
+        margin-top: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    /* Emergency Callout */
+    .emergency-callout {
+        background: #fef2f2;
+        border-left: 6px solid var(--accent-red);
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 25px;
+    }
+
+    .emergency-callout h3 {
+        color: var(--accent-red);
+        margin-bottom: 8px;
+    }
+
+    .phone-number {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--accent-red);
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* Highlight Boxes */
+    .box-dos {
+        background: #f0fdf4;
+        border-left: 4px solid var(--accent-green);
+        padding: 12px 15px;
+        margin-bottom: 12px;
+        border-radius: 4px;
+    }
+
+    .box-donts {
+        background: #fef2f2;
+        border-left: 4px solid var(--accent-red);
+        padding: 12px 15px;
+        margin-bottom: 12px;
+        border-radius: 4px;
+    }
+
+    /* Table styling for Multidoses */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        border-top: 1px solid #e2e8f0;
+        margin-top: 40px;
+    }
+</style>
+</head>
+<body>
+
+    <!-- Bar de Acessibilidade -->
+    <div class="access-bar">
+        <span>📍 Guia Educativo de Saúde | Para você e sua família</span>
+        <div class="access-controls">
+            <div>
+                <span>Texto:</span>
+                <button class="font-btn" onclick="changeFontSize(1)" title="Aumentar Texto">A+</button>
+                <button class="font-btn" onclick="changeFontSize(-1)" title="Diminuir Texto">A-</button>
+            </div>
+            <button class="download-btn" onclick="downloadHTML()" title="Baixar este guia no seu dispositivo">📥 Baixar HTML</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho Principal (Hero) -->
+    <header class="hero">
+        <h1>💊 Cuidando dos Seus Medicamentos</h1>
+        <p>Aprenda de forma simples e rápida a guardar, usar e descartar seus medicamentos com segurança total em casa.</p>
+
+        <!-- Barra de Pesquisa Rápida -->
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="searchTopic()" placeholder="🔍 Qual medicamento ou dúvida você quer pesquisar? (ex: geladeira, colírio, cápsula, água)">
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Abas de Navegação -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-casa')">🏠 Guardar em Casa</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-formas')">💊 Formas Farmacêuticas</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-interacoes')">⚠️ Interações & Cuidados</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-tarjas')">🏷️ Entendendo as Tarjas</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-multidoses')">⏳ Pós-Abertura (Validade)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-descarte')">♻️ Descarte Certo</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-ferramenta')">🧮 Calculadora de Validade</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-quiz')">🎯 Teste Seus Conhecimentos</button>
+        </nav>
+
+        <!-- ABA 1: GUARDAR EM CASA -->
+        <section id="tab-casa" class="content-section active">
+            <div class="card">
+                <h2><span class="icon-badge">📍</span> Onde Guardar Seus medicamentos?</h2>
+                <p>O local onde você guarda os medicamentos em casa define se eles vão continuar funcionando corretamente ou se vão estragar antes do tempo.</p>
+
+                <div class="box-dos" style="margin-top: 15px;">
+                    <strong>✅ O LUGAR CERTO:</strong>
+                    <p>Guarde em armários secos, limpos e arejados (como no quarto ou na sala), em local alto e trancado, fora do alcance de crianças e animais de estimação.</p>
+                </div>
+
+                <div class="box-donts">
+                    <strong>❌ LUGARES PROIBIDOS (ONDE NÃO GUARDAR):</strong>
+                    <ul>
+                        <li><strong>Armário do Banheiro:</strong> A umidade e o calor do chuveiro destroem o efeito das pílulas.</li>
+                        <li><strong>Cozinha (Perto do Fogão/Pia):</strong> A gordura, o vapor e o calor alteram os químicos.</li>
+                        <li><strong>Dentro do Carro ou Porta-Luvas:</strong> O sol transforma o carro em um forno!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon-badge">❄️</span> Vai na Geladeira ou no Armário?</h2>
+                <p>Muitas pessoas erram ao colocar todos os medicamentos na geladeira. Veja a diferença:</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>💊 Temperatura Ambiente (15°C a 30°C)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        A grande maioria dos comprimidos, cápsulas, xaropes e pomadas deve ficar no armário bem fechado.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🧊 Geladeira (2°C a 8°C) - Regra Especial!</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        Apenas medicamentos chamados <strong>Termolábeis</strong> (como Insulinas e alguns colírios específicos) necessitam de geladeira.
+                        <br><br>
+                        <strong>⚠️ Atenção:</strong> Guarde sempre nas prateleiras do meio. <strong>NUNCA guarde na porta da geladeira</strong> (que balança e varia de temperatura) e <strong>JAMAIS congele</strong>!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 2: FORMAS FARMACÊUTICAS -->
+        <section id="tab-formas" class="content-section">
+            <div class="card">
+                <h2><span class="icon-badge">💊</span> Guia de Formas Farmacêuticas</h2>
+                <p>Cada formato de medicamento tem uma maneira correta de ser administrado para garantir que funcione perfeitamente. Clique nos tipos para conferir os cuidados:</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>💊 Cápsulas</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        Fármacos envoltos por um envoltório comestível (gelatina, amido).<br><br>
+                        <strong>⚠️ Regra de Ouro:</strong> <strong>Não abra, não quebre e não triture cápsulas</strong>! O envoltório protege o fármaco e controla a sua liberação no corpo.<br>
+                        <small><em>*Exceção: Abertura apenas sob orientação profissional específica (ex: grânulos de omeprazol misturados em raspado de maçã, sem mastigar).</em></small>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>⚪ Comprimidos e Sublinguais</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Comprimidos Tradicionais:</strong> Não devem ser partidos, a menos que tenham a fenda central (sulco). Divida apenas com cortador próprio. Tomar sempre com copo cheio de água.</li>
+                            <li><strong>Comprimidos Sublinguais:</strong> Devem ser colocados <strong>embaixo da língua</strong> para dissolver. Não mastigar e não engolir! Absorção em ~1 minuto. Se for fumante, aguarde a dissolução completa antes de fumar.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🍬 Drágeas e Pós Orais</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Drágeas:</strong> Possuem revestimento adocicado/protetor contra sabores ruins e proteção estomacal. <strong>Nunca rompa ou parta uma drágea</strong>. Diabéticos devem ter atenção ao açúcar da cobertura.</li>
+                            <li><strong>Pós Orais:</strong> Devem ser dissolvidos em líquido recomendado <strong>apenas na hora do consumo</strong>. Nunca prepare para guardar depois e não consuma o pó a seco.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🧪 Elixir, Xarope e Suspensão</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Elixir:</strong> Contém álcool (20% a 50%). Contraindicado para crianças, idosos e pessoas em recuperação de alcoolismo.</li>
+                            <li><strong>Xarope:</strong> Solução viscosa rica em açúcar. Diabéticos devem optar por versões sem açúcar (diet/light).</li>
+                            <li><strong>Suspensão:</strong> Partículas sólidas dispersas no líquido. <strong>Sempre agite vigorosamente</strong> o frasco antes de usar para garantir a dose correta.</li>
+                        </ul>
+                        <br>
+                        <strong>📏 Atenção para as doses:</strong> Use sempre seringas ou copos-medida limpos. Evite colheres caseiras.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>👂 Gotas Auriculares (Ouvido)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        Ao aplicar gotas no ouvido, incline a cabeça e alinhe o canal auditivo:
+                        <ul>
+                            <li><strong>Adultos:</strong> Puxe a orelha suavemente para <strong>cima e para trás</strong>.</li>
+                            <li><strong>Crianças:</strong> Puxe a orelha para <strong>baixo e para trás</strong>.</li>
+                        </ul>
+                        Mantenha a cabeça inclinada por 2 a 5 minutos. Nunca use hastes flexíveis dentro do canal auditivo.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🌬️ Dispositivos Inalatórios (Bombinhas/Pós)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        Siga a técnica de respiração indicada pelo seu médico ou farmacêutico para cada tipo de bombinha.<br><br>
+                        <strong>💡 Dica de Higiene Bucal:</strong> Após usar bombinhas ou inaladores (especialmente com corticoides), <strong>enxágue a boca, escove os dentes ou faça gargarejos com água</strong> para prevenir rouquidão e o surgimento de candidíase ("sapequinha").
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🩹 Adesivos, Óvulos e Supositórios</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Adesivos Transdérmicos:</strong> Aplique em pele limpa, seca e sem pelos. Pressione com a palma da mão por 30 segundos. Faça rodízio dos locais de aplicação.</li>
+                            <li><strong>Cremes e Óvulos Vaginais:</strong> Aplique preferencialmente à noite, deitada. Use absorvente externo no dia seguinte para conter resíduos.</li>
+                            <li><strong>Supositórios e Enemas:</strong> Para aplicação, deite-se sobre o <strong>lado esquerdo</strong>, mantendo a perna esquerda esticada e a direita dobrada. Se o supositório amolecer com o calor, recoloque na embalagem sob água fria ou geladeira antes de abrir.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 3: INTERAÇÕES E CUIDADOS -->
+        <section id="tab-interacoes" class="content-section">
+            <div class="card">
+                <h2><span class="icon-badge">⚠️</span> Interações e Cuidados ao Tomar</h2>
+                <p>Tomar remédios com o líquido errado ou misturá-los sem orientação pode cancelar o efeito do tratamento ou provocar efeitos colaterais graves.</p>
+
+                <div class="box-dos">
+                    <strong>🥛 COM O QUE INGERIR SEUS REMÉDIOS?</strong>
+                    <p>Tome comprimidos, cápsulas e drágeas sempre com <strong>um copo cheio de água pura em temperatura ambiente</strong>. A água garante a descida correta até o estômago e não interfere na medicação.</p>
+                </div>
+
+                <div class="box-donts">
+                    <strong>❌ O QUE EVITAR NA HORA DE TOMAR:</strong>
+                    <ul>
+                        <li><strong>Tomar remédio a seco:</strong> O comprimido pode grudar no esôfago e provocar lesões/úlceras dolorosas.</li>
+                        <li><strong>Sucos de Frutas ou Refrigerantes:</strong> A acidez dos sucos (ex: laranja, maracujá, uva) ou o gás dos refrigerantes podem alterar ou anular o efeito do fármaco.</li>
+                        <li><strong>Café ou Chás:</strong> A cafeína e os taninos podem acelerar o coração ou impedir que o estômago absorva o remédio.</li>
+                        <li><strong>Bebidas Alcoólicas:</strong> O álcool corta a eficácia de diversos remédios (como antibióticos) e sobrecarrega perigosamente o fígado.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 4: TARJAS -->
+        <section id="tab-tarjas" class="content-section">
+            <div class="card">
+                <h2><span class="icon-badge">🏷️</span> O que significam as cores das Tarjas?</h2>
+                <p>As faixas na caixa do medicamento indicam o grau de risco e a necessidade de receita médica. Clique para aprender:</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><span class="tag-tarja tarja-sem">SEM TARJA</span> Medicamentos Isentos de Prescrição</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>O que é:</strong> Usados para sintomas leves e pontuais (como dores de cabeça simples, azia ou febre baixa).<br>
+                        <strong>Dica:</strong> Embora não exijam receita, use com moderação e siga as instruções da bula!
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><span class="tag-tarja tarja-vermelha">TARJA VERMELHA</span> Venda Sob Receita Médica</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>O que é:</strong> Remédios para doenças graves ou de uso contínuo (como pressão alta, diabetes e antibióticos).<br>
+                        <strong>Exigência:</strong> Necessita de receita médica. No caso de antibióticos, a receita fica retida na farmácia.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><span class="tag-tarja tarja-preta">TARJA PRETA</span> Controle Especial Alto Risco</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>O que é:</strong> Medicamentos que afetam o sistema nervoso (calmantes, antidepressivos fortes, indutores do sono).<br>
+                        <strong>Aviso:</strong> Podem causar dependência. Só tome sob orientação médica rigorosa.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><span class="tag-tarja tarja-amarela">TARJA AMARELA</span> Medicamento Genérico</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>O que é:</strong> Possui o mesmo princípio ativo, na mesma dosagem e com a mesma eficácia do medicamento de marca, porém costuma ser mais barato.<br>
+                        <strong>Identificação:</strong> Apresenta uma letra <strong>"G"</strong> grande em preto dentro da faixa amarela.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 5: MULTIDOSES / PÓS-ABERTURA -->
+        <section id="tab-multidoses" class="content-section">
+            <div class="card">
+                <h2><span class="icon-badge">⏳</span> Cuidado: A Validade Muda Depois de Abrir!</h2>
+                <p>Você sabia? A data de validade impressa na caixa só vale para a embalagem <strong>FECHADA</strong>. Depois que você abre o frasco, o prazo de uso encurta drasticamente!</p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de medicamento</th>
+                                <th>Validade Pós-Abertura</th>
+                                <th>Recomendação Principal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Colírios (Olhos)</strong></td>
+                                <td><strong>30 dias</strong></td>
+                                <td>Pressione o canto interno do olho ao aplicar. Nunca encoste o frasco no olho!</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gotas para Ouvido</strong></td>
+                                <td><strong>30 dias</strong></td>
+                                <td>Incline a cabeça e puxar a orelha (para cima no adulto, para baixo na criança).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Xaropes e Gotas</strong></td>
+                                <td><strong>30 dias</strong></td>
+                                <td>Lave o copinho/seringa medidora logo após tomar. Evite colheres caseiras.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Antibióticos Reconstituídos</strong></td>
+                                <td><strong>7 a 14 dias</strong></td>
+                                <td>Preparados com água. Guardar na geladeira conforme instrução da bula.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pomadas e Cremes</strong></td>
+                                <td><strong>30 dias</strong></td>
+                                <td>Pegue a pomada com mãos limpas ou haste flexível.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="box-dos" style="margin-top:20px;">
+                    <strong>💡 REGRA DE OURO DA ETIQUETA:</strong>
+                    <p>Assim que abrir um xarope, pomada ou colírio, pegue uma caneta e <strong>escreva no frasco a data de abertura</strong>. Não confie apenas na memória!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 6: DESCARTE CONSCIENTE -->
+        <section id="tab-descarte" class="content-section">
+            <div class="card">
+                <h2><span class="icon-badge">♻️</span> Descarte Consciente: Proteja a Natureza</h2>
+                <p>Medicamento não é lixo comum! Jogar medicamentos no vaso sanitário ou no lixo da cozinha contamina a água potável e o solo da sua cidade.</p>
+
+                <div class="box-donts">
+                    <strong>❌ O QUE NUNCA FAZER:</strong>
+                    <p>• Não jogue líquidos na pia ou vaso sanitário.<br>
+                    • Não jogue pílulas ou cartelas no lixo reciclável ou orgânico doméstico.</p>
+                </div>
+
+                <div class="box-dos">
+                    <strong>✅ O JEITO CERTO DE DESCARTAR:</strong>
+                    <p>1. Separe os medicamentos vencidos ou que sobram do tratamento.<br>
+                    2. Leve até um <strong>Ponto de Coleta Seletiva em Drogarias, Farmácias ou Postos de Saúde (UBS)</strong>.<br>
+                    3. Lá existem caixas próprias onde os medicamentos são recolhidos e destruídos com segurança sem poluir o planeta.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 7: CALCULADORA INTERATIVA -->
+        <section id="tab-ferramenta" class="content-section">
+            <div class="card tool-box">
+                <h3>🧮 Calculadora de Validade de Frasco Aberto</h3>
+                <p>Descubra até quando você pode usar o seu xarope, colírio ou pomada depois de aberto!</p>
+
+                <div class="input-group">
+                    <label for="medType">Selecione o tipo de medicamento:</label>
+                    <select id="medType">
+                        <option value="30">Colírio (Olhos) - 30 dias</option>
+                        <option value="30">Xarope Comum / Gotas - 30 dias</option>
+                        <option value="10">Antibiótico Suspensão (Preparo) - 10 dias</option>
+                        <option value="30">Pomada / Creme - 30 dias</option>
+                        <option value="30">Gotas de Ouvido - 30 dias</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="openDate">Qual dia você abriu o medicamento?</label>
+                    <input type="date" id="openDate">
+                </div>
+
+                <button class="btn-calc" onclick="calculateExpiry()">Calcular Data Limite de Uso</button>
+
+                <div id="calcResult" class="calc-result">
+                    <!-- Resultado inserido via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 8: QUIZ INTERATIVO -->
+        <section id="tab-quiz" class="content-section">
+            <div class="card quiz-card">
+                <h2>🎯 Teste Seus Conhecimentos em Saúde</h2>
+                <p>Responda às perguntas abaixo para verificar se aprendeu tudo direitinho!</p>
+
+                <div id="quiz-1" style="margin-top: 20px;">
+                    <p><strong>1. Qual o melhor líquido para tomar comprimidos ou cápsulas?</strong></p>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q1-feedback')">A) Um copo de suco de laranja bem gelado.</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'q1-feedback')">B) Um copo cheio de água pura em temperatura ambiente.</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q1-feedback')">C) Café quente ou refrigerante.</div>
+                    <div id="q1-feedback" class="feedback-box"></div>
+                </div>
+
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #fed7aa;">
+
+                <div id="quiz-2">
+                    <p><strong>2. O que devemos fazer com uma cápsula ou drágea comum?</strong></p>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q2-feedback')">A) Partir ao meio ou triturar o pó para engolir melhor.</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'q2-feedback')">B) Engolir inteira com água, sem abrir, quebrar ou mastigar.</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q2-feedback')">C) Dissolver em um copo de refrigerante.</div>
+                    <div id="q2-feedback" class="feedback-box"></div>
+                </div>
+
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #fed7aa;">
+
+                <div id="quiz-3">
+                    <p><strong>3. Onde devemos descartar os medicamentos vencidos ou quebrados?</strong></p>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q3-feedback')">A) No vaso sanitário e dar a descarga.</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true, 'q3-feedback')">B) Em pontos de coleta em Farmácias ou Postos de Saúde (UBS).</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false, 'q3-feedback')">C) No lixo comum de casa junto com o lixo da cozinha.</div>
+                    <div id="q3-feedback" class="feedback-box"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNER DE EMERGÊNCIA / INTOXICAÇÃO -->
+        <div class="emergency-callout">
+            <h3>🚨 Em Caso de Emergência ou Intoxicação Acidental:</h3>
+            <p>Se alguém ou alguma criança tomar um medicamento errado por engano, mantenha a calma e ligue imediatamente para o Centro de Informação Toxicológica:</p>
+            <span class="phone-number">📞 Disque-Intoxicação: 0800 722 6001</span>
+            <p style="font-size: 0.95rem; color: #7f1d1d; margin-top: 8px;">A ligação é gratuita e funciona 24 horas por dia em todo o Brasil!</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p><strong>Guia Educativo Promocional de Saúde e Farmácia Básica</strong></p>
+        <p style="color: var(--primary-dark); font-weight: bold; margin: 8px 0;">
+            Autores: Curso Técnico em Farmácia - Turma 525 (Ano 2026) - Senac.
+        </p>
+    </footer>
+
+    <!-- Scripts Interativos JS -->
+    <script>
+        // Set today's date in calculator
+        document.getElementById('openDate').valueAsDate = new Date();
+
+        // Download HTML File function
+        function downloadHTML() {
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'panfleto_interativo_saude.html';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Font Resize
+        let currentFontSize = 18;
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 14) currentFontSize = 14;
+            if (currentFontSize > 24) currentFontSize = 24;
+            document.body.style.fontSize = currentFontSize + 'px';
+        }
+
+        // Tab Switching
+        function switchTab(evt, tabId) {
+            let contents = document.querySelectorAll('.content-section');
+            contents.forEach(c => c.classList.remove('active'));
+
+            let buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Accordions
+        function toggleAccordion(header) {
+            let body = header.nextElementSibling;
+            let isOpened = body.classList.contains('open');
+
+            // Close all open
+            document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+
+            if (!isOpened) {
+                body.classList.add('open');
+            }
+        }
+
+        // Calculator
+        function calculateExpiry() {
+            let days = parseInt(document.getElementById('medType').value);
+            let dateVal = document.getElementById('openDate').value;
+
+            if (!dateVal) {
+                alert('Por favor, selecione uma data!');
+                return;
+            }
+
+            let openDate = new Date(dateVal);
+            openDate.setDate(openDate.getDate() + days);
+
+            let day = String(openDate.getDate()).padStart(2, '0');
+            let month = String(openDate.getMonth() + 1).padStart(2, '0');
+            let year = openDate.getFullYear();
+
+            let formattedDate = `${day}/${month}/${year}`;
+
+            let resDiv = document.getElementById('calcResult');
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = `
+                <strong>📅 Resultado do Cálculo:</strong><br>
+                Este medicamento estará <strong>VÁLIDO PARA USO ATÉ: <span style="color:#16a34a; font-size:1.2rem;">${formattedDate}</span></strong>.<br>
+                <small style="color:#64748b;">Após esta data, descarte o produto no ponto de coleta de uma farmácia ou posto de saúde.</small>
+            `;
+        }
+
+        // Quiz Logic
+        function checkAnswer(element, isCorrect, feedbackId) {
+            let parent = element.parentElement;
+            let options = parent.querySelectorAll('.quiz-option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+
+            let feedback = document.getElementById(feedbackId);
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedback.innerHTML = '✨ Parabéns! Resposta corretíssima!';
+                feedback.style.color = '#16a34a';
+            } else {
+                element.classList.add('incorrect');
+                feedback.innerHTML = '❌ Ops, resposta incorreta. Tente novamente ou leia as dicas do guia!';
+                feedback.style.color = '#dc2626';
+            }
+        }
+
+        // Search Filter
+        function searchTopic() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            if (input.trim() === '') return;
+
+            // Simple highlighting/navigation logic
+            if (input.includes('geladeira') || input.includes('banheiro') || input.includes('armario')) {
+                document.querySelectorAll('.tab-btn')[0].click();
+            } else if (input.includes('capsula') || input.includes('comprimido') || input.includes('xarope') || input.includes('forma') || input.includes('bombinha')) {
+                document.querySelectorAll('.tab-btn')[1].click();
+            } else if (input.includes('agua') || input.includes('suco') || input.includes('alcool') || input.includes('interacao') || input.includes('cafe')) {
+                document.querySelectorAll('.tab-btn')[2].click();
+            } else if (input.includes('tarja') || input.includes('generico') || input.includes('preta')) {
+                document.querySelectorAll('.tab-btn')[3].click();
+            } else if (input.includes('colirio') || input.includes('aberto') || input.includes('validade')) {
+                document.querySelectorAll('.tab-btn')[4].click();
+            } else if (input.includes('descarte') || input.includes('lixo') || input.includes('pia') || input.includes('reciclar')) {
+                document.querySelectorAll('.tab-btn')[5].click();
+            }
+        }
+    </script>
+</body>
+</html>
